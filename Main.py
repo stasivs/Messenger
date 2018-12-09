@@ -1,6 +1,5 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtGui import QFont
 from UI import Ui_MainWindow
 
 '''
@@ -9,7 +8,13 @@ pushMessage - Кнопка отправки введенного в поле Mes
 Message - Поле для набора сообщения
 setNickname - Кнопка смены никнейма на тот, что указан в поле Nickname
 Nickname - Поле для набора никнейма 
-Сhat - Чат
+chat - Чат
+Port - Поле для набора порта
+PortCreation - Кнопка для создания сервера с указанным в поле Port портом
+PortConnection - Кнопка для подключения к указанному в поле Port порту
+
+Массивы :
+Добавил массив сообщений и его наполнение
 '''
 
 
@@ -21,6 +26,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.nick = "Неопознанный арбуз"
         self.MAXLEN = 55
         self.main()
+        self.messages = []
 
     def main(self):
         self.pushMessage.clicked.connect(self.writeMessage)
@@ -33,6 +39,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         for i in range(1, len(temp) // self.MAXLEN + 1):
             self.chat.addItem(temp[startmessage + (i - 1) * self.MAXLEN: i * self.MAXLEN])
         self.Message.setText("")
+        self.messages.append(temp)
 
     def changeNickname(self):
         temp = self.Nickname.text().strip()
@@ -46,6 +53,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.chat.addItem("{} сменил имя на {}".format(oldNick, self.nick))
             self.showNick.setText(self.nick)
         self.Nickname.setText("")
+
 
 
 if __name__ == "__main__":
