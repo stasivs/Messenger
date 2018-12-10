@@ -3,10 +3,10 @@ from datetime import datetime
 
 class BlankMessage:
     def __init__(self, text):
-        self.__text = text
+        self.text = text
 
     def get_message(self):
-        return self.__text
+        return self.text
 
 
 class UserMessage (BlankMessage):
@@ -18,7 +18,7 @@ class UserMessage (BlankMessage):
         return "{} {} -> {}".format(
             datetime.strftime(datetime.now(), "[%d.%m %H:%M]"),
             self.__owner_nick,
-            self.__text
+            self.text
         )
 
 
@@ -28,7 +28,7 @@ class Info (BlankMessage):
 
     def get_message(self):
         return "INFO: {}".format(
-            self.__text
+            self.text
         )
 
 
@@ -38,7 +38,7 @@ class Error(BlankMessage):
 
     def get_message(self):
         return "ERROR: {}".format(
-            self.__text
+            self.text
         )
 
 
@@ -48,5 +48,5 @@ class Bcast(BlankMessage):
 
     def get_message(self):
         return "BCAST: {}".format(
-            self.__text
+            self.text
         )

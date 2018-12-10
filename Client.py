@@ -3,7 +3,7 @@ import pickle
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from UI import Ui_MainWindow
 import Messages
-import Server
+import threading
 import socket
 
 '''
@@ -30,7 +30,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.main()
-        self.sock = None
+        self.sock, self.th = None, None
 
     def main(self):
         self.pushMessage.clicked.connect(self.sendMessage)
@@ -65,6 +65,9 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         except OSError:
             self.showMessage(failedServer)
             return
+        self.th = threading.Thread(target=self.receiveMessage)
+        self.th.daemon = True
+        self.th.start()
 
 
 if __name__ == "__main__":
