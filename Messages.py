@@ -10,14 +10,14 @@ class BlankMessage:
 
 
 class UserMessage (BlankMessage):
-    def __init__(self, text):
+    def __init__(self, text, owner_nick):
         super().__init__(text)
-        self.owner_nick = "*not_defined*"
+        self.__owner_nick = owner_nick
 
     def get_message(self):
-        return "[{}] {} -> {}".format(
+        return "{} {} -> {}".format(
             datetime.strftime(datetime.now(), "[%d.%m %H:%M]"),
-            self.owner_nick,
+            self.__owner_nick,
             self.__text
         )
 
@@ -42,7 +42,7 @@ class Error(BlankMessage):
         )
 
 
-class BCast(BlankMessage):
+class Bcast(BlankMessage):
     def __init__(self, text):
         super().__init__(text)
 
