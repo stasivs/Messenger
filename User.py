@@ -5,9 +5,15 @@ import socket
 
 
 class User:
+    # класс, описывающий одного юзера
+
     count = 0
+
     notOnServer = Error("User not on server!")
+    userNotFound = Error("User with this nick not found!")
     youBanned = Info("You have banned on this server!")
+    alreadyBanned = Error("This ip already banned!")
+    notBanned = Error("This ip has not banned!")
 
     def __init__(self, ip, conn, server):
         # установка адреса, соединения, ника, потока приема

@@ -1,8 +1,11 @@
-class Executor:
-    # класс описывающий обработчик команд
+from Messages import *
 
-    def __init__(self, sevrer):
+
+class Executor:
+    # класс, описывающий обработчик команд
+
+    def __init__(self, server):
         pass
 
-    def execute(self, name, args, owner):
+    def execute(self, name, args, caller):
         pass

@@ -27,29 +27,35 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.main()
+        self.sock = None
 
     def main(self):
-        self.pushMessage.clicked.connect(self.showMessage)
+        self.pushMessage.clicked.connect(self.sendMessage)
         self.setNickname.clicked.connect(self.changeNickname)
         self.PortConnection.clicked.connect(self.connect)
 
     def showMessage(self, message):
-        self.chat.append(self.receiveMessage(message))
+        self.chat.append(message.get_text())
 
-    def receiveMessage(self, message):
-        return pickle.loads(message)
+    def receiveMessage(self):
+        while True:
+            message = pickle.loads(self.sock.recv(1024))
+            if message is None:
+                continue
+            self.showMessage(message)
 
     def sendMessage(self):
-        message = Messages.UserMessage(self.Message.text())
+        message = Messages.BlankMessage(self.Message.text())
+        self.sock.send(pickle.dumps(message))
 
     def changeNickname(self):
         pass
 
     def connect(self):
         ip, port = self.IP.text(), 9090
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            sock.connect((ip, port))
+            self.sock.connect((ip, port))
         except Exception:
             print("Ошибка")
 
