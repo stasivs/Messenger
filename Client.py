@@ -21,6 +21,9 @@ PortConnection - Кнопка для подключения к указанно�
 Добавил массив сообщений и его наполнение
 '''
 
+wrongAddr = Messages.Error("Wrong server adress!")
+failedServer = Messages.Error("Failed connect to server!")
+
 
 class MyWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -35,7 +38,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.PortConnection.clicked.connect(self.connect)
 
     def showMessage(self, message):
-        self.chat.append(message.get_text())
+        self.chat.append(message.get_message())
 
     def receiveMessage(self):
         while True:
@@ -52,12 +55,16 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         pass
 
     def connect(self):
-        ip, port = self.IP.text(), 9090
+        ip = self.IP.text()
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            self.sock.connect((ip, port))
-        except Exception:
-            print("Ошибка")
+            self.sock.connect((ip, 9090))
+        except socket.gaierror:
+            self.showMessage(wrongAddr)
+            return
+        except OSError:
+            self.showMessage(failedServer)
+            return
 
 
 if __name__ == "__main__":

@@ -39,7 +39,7 @@ class Server:
 
     def manager(self, message, owner):
         # распределние приходящей информации на команды или сообщения юзера
-        if message.get_text()[0] == "/":
+        if message.get_message()[0] == "/":
             name = message.text[1:].split()[0]
             args = message.text[1:].split()[1:]
             self.executor.execute(name, args, owner)  # отправка в обработчик команд
@@ -67,3 +67,7 @@ class Server:
             return User.notBanned
         self.blacklist.remove(ip)
 
+
+if __name__ == "__main__":
+    ip = input("IP: ")
+    server = Server(ip)

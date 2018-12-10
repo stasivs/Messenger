@@ -29,7 +29,9 @@ class User:
         # метод для обработки успешного входа на сервер
         if self.__onServer:
             return
-        self.send(Info("Connect success! Welcome on IP: ") + self.server.HOST)
+        self.send(Info("Connect success! Welcome on IP: {}".format(
+            self.server.HOST
+        )))
         self.server.resend(Bcast("Connected {} ({})".format(
             self.nick,
             self.ip
