@@ -3,6 +3,7 @@ import pickle
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from UI import Ui_MainWindow
 import Messages
+import Server
 import socket
 
 '''
@@ -28,12 +29,15 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.main()
 
     def main(self):
-        self.pushMessage.clicked.connect(self.writeMessage)
+        self.pushMessage.clicked.connect(self.showMessage)
         self.setNickname.clicked.connect(self.changeNickname)
         self.PortConnection.clicked.connect(self.connect)
 
-    def writeMessage(self):
-        self.chat.append("TEXT")
+    def showMessage(self, message):
+        self.chat.append(self.receiveMessage(message))
+
+    def receiveMessage(self, message):
+        return pickle.loads(message)
 
     def sendMessage(self):
         message = Messages.UserMessage(self.Message.text())
@@ -42,8 +46,12 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         pass
 
     def connect(self):
-        ip, port = self.IP.text(), self.Port.text()
-        print(ip, port)
+        ip, port = self.IP.text(), 9090
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            sock.connect((ip, port))
+        except Exception:
+            print("Ошибка")
 
 
 if __name__ == "__main__":
