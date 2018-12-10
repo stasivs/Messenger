@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'UI2.ui'
+# Form implementation generated from reading ui file 'UI.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(823, 759)
+        MainWindow.resize(788, 759)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
@@ -21,9 +21,9 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 479, 549))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.chat = QtWidgets.QListWidget(self.scrollAreaWidgetContents)
+        self.chat = QtWidgets.QTextBrowser(self.scrollAreaWidgetContents)
         self.chat.setGeometry(QtCore.QRect(0, 0, 481, 551))
-        self.chat.setObjectName("chat")
+        self.chat.setObjectName("textBrowser")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.pushMessage = QtWidgets.QPushButton(self.centralwidget)
         self.pushMessage.setGeometry(QtCore.QRect(20, 667, 481, 25))
@@ -33,7 +33,7 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.Message = QtWidgets.QLineEdit(self.centralwidget)
         self.Message.setGeometry(QtCore.QRect(20, 627, 481, 25))
-        self.Message.setObjectName("textEdit")
+        self.Message.setObjectName("Message")
         self.setNickname = QtWidgets.QPushButton(self.centralwidget)
         self.setNickname.setGeometry(QtCore.QRect(520, 257, 201, 25))
         self.setNickname.setObjectName("setNickname")
@@ -50,23 +50,26 @@ class Ui_MainWindow(object):
         self.label_4.setGeometry(QtCore.QRect(520, 170, 411, 16))
         self.label_4.setObjectName("label_4")
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(-250, 197, 75, 25))
+        self.pushButton_3.setGeometry(QtCore.QRect(-250, 197, 75, 23))
         self.pushButton_3.setObjectName("pushButton_3")
-        self.PortCreation = QtWidgets.QPushButton(self.centralwidget)
-        self.PortCreation.setGeometry(QtCore.QRect(520, 457, 201, 25))
-        self.PortCreation.setObjectName("PortCreation")
-        self.Port = QtWidgets.QLineEdit(self.centralwidget)
-        self.Port.setGeometry(QtCore.QRect(520, 417, 201, 25))
-        self.Port.setObjectName("Port")
         self.PortConnection = QtWidgets.QPushButton(self.centralwidget)
-        self.PortConnection.setGeometry(QtCore.QRect(520, 497, 201, 25))
+        self.PortConnection.setGeometry(QtCore.QRect(520, 547, 201, 25))
         self.PortConnection.setObjectName("PortConnection")
+        self.IP = QtWidgets.QLineEdit(self.centralwidget)
+        self.IP.setGeometry(QtCore.QRect(520, 397, 201, 25))
+        self.IP.setObjectName("IP")
+        self.label_6 = QtWidgets.QLabel(self.centralwidget)
+        self.label_6.setGeometry(QtCore.QRect(520, 340, 341, 51))
+        self.label_6.setObjectName("label_6")
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(520, 360, 341, 51))
+        self.label_5.setGeometry(QtCore.QRect(520, 450, 341, 51))
         self.label_5.setObjectName("label_5")
+        self.Port = QtWidgets.QLineEdit(self.centralwidget)
+        self.Port.setGeometry(QtCore.QRect(520, 507, 201, 25))
+        self.Port.setObjectName("Port")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 823, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 788, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -86,7 +89,7 @@ class Ui_MainWindow(object):
         self.showNick.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Неопознанный арбуз</span></p></body></html>"))
         self.label_4.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Изменить никнейм :</span></p></body></html>"))
         self.pushButton_3.setText(_translate("MainWindow", "PushButton"))
-        self.PortCreation.setText(_translate("MainWindow", "Создать сервер"))
         self.PortConnection.setText(_translate("MainWindow", "Подключиться к серверу"))
+        self.label_6.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Укажите айпи сервера</span></p></body></html>"))
         self.label_5.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Укажите порт сервера</span></p><p><span style=\" font-size:12pt;\">От 1024 до 65535 (Включительно)</span></p></body></html>"))
 

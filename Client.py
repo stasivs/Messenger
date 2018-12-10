@@ -25,14 +25,12 @@ class MyWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.nick = "Неопознанный арбуз"
-        self.MAXLEN = 55
         self.main()
-        self.server = Server
 
     def main(self):
         self.pushMessage.clicked.connect(self.writeMessage)
         self.setNickname.clicked.connect(self.changeNickname)
+        self.PortConnection.clicked.connect(self.connect)
 
     def writeMessage(self):
         self.chat.append("TEXT")
@@ -40,18 +38,12 @@ class MyWidget(QMainWindow, Ui_MainWindow):
     def sendMessage(self):
         message = Messages.UserMessage(self.Message.text())
 
-
     def changeNickname(self):
         pass
 
-
-class Server:
-    def __init__(self):
-        self.nickname = "Nickname"
-        self.message = "Message"
-
-    def sendNickname(self):
-        pass
+    def connect(self):
+        ip, port = self.IP.text(), self.Port.text()
+        print(ip, port)
 
 
 if __name__ == "__main__":
