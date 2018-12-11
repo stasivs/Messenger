@@ -24,7 +24,7 @@ class Server:
         self.th = threading.Thread(target=self.acceptor)
         self.th.start()
         # создание обработчика команд
-        self.__executor = Executor(self)
+        self.executor = Executor(self)
         # установка стандартных прав при входе на сервер
         Permissions.Default = def_perms
         self.users.append(ConsoleUser(self))
@@ -57,7 +57,7 @@ class Server:
         if message.get_message()[0] == "/":
             name = message.text[1:].split()[0]
             args = message.text[1:].split()[1:]
-            self.__executor.execute(name, args, owner)  # отправка в обработчик команд
+            self.executor.execute(name, args, owner)  # отправка в обработчик команд
         else:
             # формирование нормального вида сообщения пользователя и отправка остальным
             message = UserMessage(message.get_message(), owner.nick)

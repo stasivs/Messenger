@@ -46,3 +46,6 @@ class Executor:
             if cmd.name == name:
                 return cmd
         raise CmdNotFound("Command {} not found!".format(name))
+
+    def get_list_commands(self):
+        return self.__commands.copy()
