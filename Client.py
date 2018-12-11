@@ -9,6 +9,8 @@ import socket
 
 wrongAddr = Messages.Error("Wrong server adress!")
 failedServer = Messages.Error("Failed connect to server!")
+notConnected = Messages.Error("You have not connected!")
+youDisconnected = Messages.Info("You disconnected from server!")
 
 
 class MyWidget(QMainWindow, Ui_MainWindow):
@@ -16,9 +18,8 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.main()
-        self.th = threading.Thread(target=self.receiveMessage)
-        self.th.daemon = True
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.th = None
+        self.sock = None
         self.connected = False
 
     def main(self):
@@ -31,7 +32,10 @@ class MyWidget(QMainWindow, Ui_MainWindow):
 
     def receiveMessage(self):
         while self.connected:
-            message = pickle.loads(self.sock.recv(1024))
+            try:
+                message = pickle.loads(self.sock.recv(1024))
+            except Exception:
+                return
             if message is None:
                 continue
             self.showMessage(message)
@@ -46,12 +50,12 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.sock.send(pickle.dumps(message))
             self.Message.setText("")
         else:
-            self.chat.append("Вы не подключились к серверу")
+            self.showMessage(notConnected)
 
     def connect(self):
         ip = self.IP.text()
-        self.connected = True
         try:
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((ip, 9090))
         except socket.gaierror:
             self.showMessage(wrongAddr)
@@ -59,6 +63,9 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         except OSError:
             self.showMessage(failedServer)
             return
+        self.connected = True
+        self.th = threading.Thread(target=self.receiveMessage)
+        self.th.daemon = True
         self.th.start()
         self.setWindowTitle("Connected to " + ip)
 
@@ -66,10 +73,10 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         if self.connected:
             self.connected = False
             self.sock.close()
-            self.setWindowTitle("Чат")
-            self.chat.append("Вы покинули сервер!")
+            self.setWindowTitle("Local Network Messenger")
+            self.showMessage(youDisconnected)
         else:
-            self.chat.append("Чтобы откуда-то выйти надо туда зайти")
+            self.showMessage(notConnected)
 
 
 if __name__ == "__main__":
