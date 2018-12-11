@@ -1,25 +1,11 @@
 import sys
 import pickle
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtCore import Qt
 from UI import Ui_MainWindow
 import Messages
 import threading
 import socket
-
-'''
-Объекты :
-pushMessage - Кнопка отправки введенного в поле Message
-Message - Поле для набора сообщения
-setNickname - Кнопка смены никнейма на тот, что указан в поле Nickname
-Nickname - Поле для набора никнейма 
-chat - Чат
-IP - Поле для набора айпи
-Port - Поле для набора порта
-PortConnection - Кнопка для подключения к указанному IP с указанным PORT
-
-Массивы :
-Добавил массив сообщений и его наполнение
-'''
 
 wrongAddr = Messages.Error("Wrong server adress!")
 failedServer = Messages.Error("Failed connect to server!")
@@ -33,11 +19,12 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.th = threading.Thread(target=self.receiveMessage)
         self.th.daemon = True
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.connected = False
 
     def main(self):
         self.pushMessage.clicked.connect(self.sendMessage)
-        self.setNickname.clicked.connect(self.changeNickname)
-        self.PortConnection.clicked.connect(self.connect)
+        self.IPConnection.clicked.connect(self.connect)
+        self.Disconnect.clicked.connect(self.disconect)
 
     def showMessage(self, message):
         self.chat.append(message.get_message())
@@ -49,15 +36,22 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                 continue
             self.showMessage(message)
 
-    def sendMessage(self):
-        message = Messages.BlankMessage(self.Message.text())
-        self.sock.send(pickle.dumps(message))
+    def keyPressEvent(self, event):
+        if event.key() + 1 == Qt.Key_Enter:
+            self.sendMessage()
 
-    def changeNickname(self):
-        pass
+
+    def sendMessage(self):
+        if self.connected:
+            message = Messages.BlankMessage(self.Message.text())
+            self.sock.send(pickle.dumps(message))
+            self.Message.setText("")
+        else:
+            self.chat.append("Вы не подключились к серверу")
 
     def connect(self):
         ip = self.IP.text()
+        self.connected = True
         try:
             self.sock.connect((ip, 9090))
         except socket.gaierror:
@@ -68,6 +62,18 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             return
         self.th.start()
         self.setWindowTitle("Connected to " + ip)
+
+    def disconect(self):
+        if self.connected:
+            self.connected = False
+            try:
+                self.sock.close()
+                self.setWindowTitle("Чат")
+                self.chat.append("Вы покинули сервер!")
+            except Exception:
+                return
+        else:
+            self.chat.append("Чтобы откуда-то выйти надо туда зайти")
 
 
 if __name__ == "__main__":
