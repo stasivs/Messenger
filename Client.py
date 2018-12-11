@@ -24,7 +24,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
     def main(self):
         self.pushMessage.clicked.connect(self.sendMessage)
         self.IPConnection.clicked.connect(self.connect)
-        self.Disconnect.clicked.connect(self.disconect)
+        self.Disconnect.clicked.connect(self.disconnect)
 
     def showMessage(self, message):
         self.chat.append(message.get_message())
@@ -37,7 +37,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.showMessage(message)
 
     def keyPressEvent(self, event):
-        if event.key() + 1 == Qt.Key_Enter:
+        if event.key() + 1 == Qt.Key_Enter and self.connected:
             self.sendMessage()
 
     def sendMessage(self):
