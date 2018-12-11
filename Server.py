@@ -10,10 +10,10 @@ class Server:
     notBanned = ServerError("IP has not banned!")
     userNotFound = ServerError("User with nick not found!")
 
-    def __init__(self, ip, port=9090, def_perms=Permissions.Guest):
+    def __init__(self, ip, def_perms=Permissions.Guest):
         # установка адреса, порта, главного сокета
         self.HOST = ip
-        self.PORT = port
+        self.PORT = 9090
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((self.HOST, self.PORT))
         self.sock.listen(10)
@@ -85,4 +85,4 @@ class Server:
 
 if __name__ == "__main__":
     ip = input("IP: ")
-    server = Server(ip, 9090, Permissions.Guest)
+    server = Server(ip, Permissions.Guest)
