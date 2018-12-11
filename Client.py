@@ -7,7 +7,7 @@ import Messages
 import threading
 import socket
 
-wrongAddr = Messages.Error("Wrong server adress!")
+wrongAddr = Messages.Error("Wrong server address!")
 failedServer = Messages.Error("Failed connect to server!")
 notConnected = Messages.Error("You have not connected!")
 youDisconnected = Messages.Info("You disconnected from server!")
