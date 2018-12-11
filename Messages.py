@@ -50,3 +50,13 @@ class Bcast(BlankMessage):
         return "BCAST: {}".format(
             self.text
         )
+
+
+class CommandAnswer (BlankMessage):
+    def __init__(self, text):
+        super().__init__(text)
+
+    def get_message(self):
+        return "{}".format(
+            self.text
+        )

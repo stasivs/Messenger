@@ -30,7 +30,9 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.main()
-        self.sock, self.th = None, None
+        self.th = threading.Thread(target=self.receiveMessage)
+        self.th.daemon = True
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def main(self):
         self.pushMessage.clicked.connect(self.sendMessage)
@@ -56,7 +58,6 @@ class MyWidget(QMainWindow, Ui_MainWindow):
 
     def connect(self):
         ip = self.IP.text()
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.sock.connect((ip, 9090))
         except socket.gaierror:
@@ -65,9 +66,8 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         except OSError:
             self.showMessage(failedServer)
             return
-        self.th = threading.Thread(target=self.receiveMessage)
-        self.th.daemon = True
         self.th.start()
+        self.setWindowTitle("Connected to " + ip)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
-from Errors import *
 from Command import *
+from Errors import *
 import os
 import sys
 
@@ -7,15 +7,14 @@ import sys
 class Executor:
     # класс, описывающий обработчик команд
 
-    CmdNotFound = ServerError("Command with name {} not found")
-
     def __init__(self, server):
         self.server = server
         self.__commands = []
+        self.reload()
 
     def reload(self):
-        sys.path.append("/Commands")
-        lst = os.listdir("/Commands")
+        sys.path.append("Commands")
+        lst = os.listdir("Commands")
         for module in lst:
             try:
                 __import__(os.path.splitext(module)[0])
@@ -31,10 +30,19 @@ class Executor:
             self.__commands.append(cmd)
 
     def execute(self, name, args, caller):
-        pass
+        try:
+            try:
+                cmd = self.get_command(name)
+                if caller.permissions < cmd.permissions:
+                    raise CmdNotPermissions("Not enough permissions!")
+                cmd.execute(args, caller)
+            except CmdCallback as cb:
+                caller.send(cb.get_message())
+        except ServerError as se:
+            print("Error:", se.get_text())
 
     def get_command(self, name):
         for cmd in self.__commands:
             if cmd.name == name:
                 return cmd
-        return Executor.CmdNotFound.formatted(name)
+        raise CmdNotFound("Command {} not found!".format(name))

@@ -1,32 +1,45 @@
-from Messages import *
+import Messages
 
 
-class CmdCallback (Exception):
-    Message_Type = Info
+class Callback (Exception):
+    def __init__(self, text="*not_defined*"):
+        self.text = text
 
-    def __init__(self, text):
-        self.__text = text
+    def get_text(self):
+        return self.text
 
+
+class ServerError (Callback):
+    pass
+
+
+class CmdCallback (Callback):
     def get_message(self):
-        return CmdCallback.Message_Type(self.__text)
+        return Messages.Info(self.text)
 
 
 class CmdError (CmdCallback):
-    Message_Type = Error
+    def get_message(self):
+        return Messages.Error(self.text)
 
 
-class CmdBroadcast (CmdCallback):
-    Message_Type = Bcast
+class CmdAnswer (CmdCallback):
+    def get_message(self):
+        return Messages.CommandAnswer(self.text)
 
 
-class ServerError (Exception):
-    def __init__(self, text="*not_defined*"):
-        self.__text = text
+class CmdSyntaxError (CmdError):
+    def __init__(self, command):
+        text = "Syntax: /{} {}".format(
+            command.name,
+            command.syntax
+        )
+        super().__init__(text)
 
-    def get_error(self):
-        return self.__text
 
-    def formatted(self, *args):
-        return ServerError(self.__text.format(
-            *args
-        ))
+class CmdNotFound (CmdError):
+    pass
+
+
+class CmdNotPermissions (CmdError):
+    pass

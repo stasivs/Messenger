@@ -76,7 +76,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("Local Messenger", "Local Messenger"))
         self.pushMessage.setText(_translate("MainWindow", "Отправить"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">                                         ЧАТ</span></p></body></html>"))
         self.setNickname.setText(_translate("MainWindow", "Сменить"))
