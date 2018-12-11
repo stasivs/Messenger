@@ -3,7 +3,7 @@ from Command import *
 
 class PermSet (Command):
     def load(self):
-        self.name = "permset"
+        self.name = "pset"
         self.syntax = "<nick:text> <group:text>"
         self.help = "Set user's permissions"
         self.permissions = Permissions.Admin
@@ -24,7 +24,7 @@ class PermSet (Command):
 
 class PermInfo (Command):
     def load(self):
-        self.name = "perminfo"
+        self.name = "pinfo"
         self.syntax = "<nick:text>"
         self.help = "Returns user's permissions"
         self.permissions = Permissions.User
