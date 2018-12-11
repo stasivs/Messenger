@@ -1,11 +1,17 @@
 import socket
 import threading
 from User import User
-from Messages import *
 from Executor import *
+from Errors import *
 
 
 class Server:
+
+    alreadyBanned = ServerError("IP {} already banned!")
+    notBanned = ServerError("IP {} has not banned!")
+    notOnServer = ServerError("User not on server!")
+    userNotFound = ServerError("User with nick {} not found!")
+
     def __init__(self, ip, port=9090):
         # установка адреса, порта, главного сокета
         self.HOST = ip
@@ -53,18 +59,18 @@ class Server:
         for u in self.users:
             if u.nick == nick:
                 return u
-        return User.userNotFound
+        return Server.userNotFound.formatted(nick)
 
     def ban(self, ip):
         # блокировка ip адреса
         if ip in self.blacklist:
-            return User.alreadyBanned
+            return Server.alreadyBanned.formatted(ip)
         self.blacklist.append(ip)
 
     def unban(self, ip):
         # разблокировка ip адреса
         if ip not in self.blacklist:
-            return User.notBanned
+            return Server.notBanned.formatted(ip)
         self.blacklist.remove(ip)
 
 

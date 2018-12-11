@@ -8,12 +8,7 @@ class User:
     # класс, описывающий одного юзера
 
     count = 0
-
-    notOnServer = Error("User not on server!")
-    userNotFound = Error("User with this nick not found!")
     youBanned = Info("You have banned on this server!")
-    alreadyBanned = Error("This ip already banned!")
-    notBanned = Error("This ip has not banned!")
 
     def __init__(self, ip, conn, server):
         # установка адреса, соединения, ника, потока приема
@@ -53,7 +48,7 @@ class User:
     def disconnect(self, reason="*not_defined*"):
         # метод для обработки отключения от сервера
         if not self.__onServer:
-            return User.notOnServer
+            return self.server.notOnServer
         if self in self.server.users:
             self.server.users.remove(self)
         self.__onServer = False
@@ -74,7 +69,7 @@ class User:
         except ConnectionResetError:
             if self.__onServer:
                 self.disconnect()
-                return User.notOnServer
+                return self.server.notOnServer
 
     def receive(self):
         # прием сообщения от этого пользователя (в отдельном потоке)
