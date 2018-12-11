@@ -30,7 +30,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.chat.append(message.get_message())
 
     def receiveMessage(self):
-        while True:
+        while self.connected:
             message = pickle.loads(self.sock.recv(1024))
             if message is None:
                 continue
@@ -39,7 +39,6 @@ class MyWidget(QMainWindow, Ui_MainWindow):
     def keyPressEvent(self, event):
         if event.key() + 1 == Qt.Key_Enter:
             self.sendMessage()
-
 
     def sendMessage(self):
         if self.connected:
@@ -63,15 +62,12 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.th.start()
         self.setWindowTitle("Connected to " + ip)
 
-    def disconect(self):
+    def disconnect(self):
         if self.connected:
             self.connected = False
-            try:
-                self.sock.close()
-                self.setWindowTitle("Чат")
-                self.chat.append("Вы покинули сервер!")
-            except Exception:
-                return
+            self.sock.close()
+            self.setWindowTitle("Чат")
+            self.chat.append("Вы покинули сервер!")
         else:
             self.chat.append("Чтобы откуда-то выйти надо туда зайти")
 
