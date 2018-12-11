@@ -112,6 +112,8 @@ class ConsoleUser (User):
 
     # переопределяем методы приема/отправки под консоль
     def send(self, message):
+        if isinstance(message, UserMessage):
+            return
         print(message.get_message())
 
     def receive(self):
