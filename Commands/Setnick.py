@@ -1,3 +1,4 @@
+from Messages import *
 from Command import *
 
 
@@ -13,6 +14,11 @@ class Setnick (Command):
         try:
             self.get_user_by_nick(nick)
         except CmdError:
+            self.server.resend(Bcast("{} ({}) changed nick to {}".format(
+                caller.nick,
+                caller.ip,
+                nick
+            )))
             caller.nick = nick
             raise CmdAnswer("Nick successful changed to {}".format(nick))
         else:

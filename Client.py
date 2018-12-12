@@ -11,6 +11,7 @@ wrongAddr = Messages.Error("Wrong server address!")
 failedServer = Messages.Error("Failed connect to server!")
 notConnected = Messages.Error("You have not connected!")
 youDisconnected = Messages.Info("You disconnected from server!")
+alreadyConnected = Messages.Error("You already connected")
 
 
 class MyWidget(QMainWindow, Ui_MainWindow):
@@ -53,6 +54,9 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.showMessage(notConnected)
 
     def connect(self):
+        if self.connected:
+            self.showMessage(alreadyConnected)
+            return
         ip = self.IP.text()
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
