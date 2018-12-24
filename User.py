@@ -76,7 +76,7 @@ class User:
         data = pickle.dumps(message)
         try:
             self.__conn.send(data)
-        except ConnectionResetError:
+        except (ConnectionResetError, BrokenPipeError):
             if self.__onServer:
                 self.disconnect()
                 raise User.notOnServer
@@ -89,7 +89,7 @@ class User:
             except socket.error:
                 self.disconnect()
                 return
-            except ConnectionResetError:
+            except (ConnectionResetError, BrokenPipeError):
                 self.disconnect()
                 return
             if not data:
